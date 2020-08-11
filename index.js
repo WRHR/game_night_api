@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 const authRoute = require('./routes/auth')
 
-app.use('/api/user', authRoute)
+app.use('/users', authRoute)
 
 mongoose.connect(
     process.env.DB_CONNECT,

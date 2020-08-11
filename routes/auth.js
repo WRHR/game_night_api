@@ -15,11 +15,11 @@ router.post('/register',
 
         const errors = validationResult(req)
         if(!errors.isEmpty()){
-            return res.status(400).json({errors: errors.array() })
+            return res.status(400).json({ errors: errors.array() })
         }
 
         const emailExists = await User.findOne({ email: req.body.email })
-        if(emailExists) return res.status(400).json({error: 'Email already in use'})
+        if(emailExists) return res.status(400).json({ error: 'Email already in use' })
 
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(req.body.password, salt)
@@ -37,15 +37,32 @@ router.post('/register',
         })
         try{
             const savedUser = await user.save()
-            res.status(200).json({user})
+            const token = jwt.sign({ _id: savedUser._id }, process.env.TOKEN_SECRET)
+            res.status(200).json({ token })
         }catch(err){
-            res.status(400).json({error: err})
+            res.status(400).json({ error: err })
         }
     }
 )
 
-// router.post('login', async (req, res)=>{
+router.post('/login', [
+    body('email').isEmail(),
+    body('password').isLength({min:6})
+    ], 
+    async (req, res)=>{
+        const errors = validationResult(req)
+        if(!errors.isEmpty()){
+            return res.status(400).json({errors: errors.array() })
+        }
+        const user = await User.findOne({ email: req.body.email })
+        if(!user) return res.status(400).json('Incorrect Email or Password')
 
-// })
+        const validPassword = await bcrypt.compare(req.body.password, user.password)
+        if(!validPassword) return res.status(400).json('Incorrect Email or Password')
+
+        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
+        res.status(200).json({ token })
+    }
+)
 
 module.exports = router
