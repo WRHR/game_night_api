@@ -19,12 +19,12 @@ router.post('/register',
         }
 
         const emailExists = await User.findOne({ email: req.body.email })
-        if(emailExists) return res.status(400).send('Email already in use')
+        if(emailExists) return res.status(400).json({error: 'Email already in use'})
 
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(req.body.password, salt)
 
-        const user = User.create({
+        const user = new User({
             name:{
                 first: req.body.name.first,
                 last: req.body.name.last
@@ -37,11 +37,12 @@ router.post('/register',
         })
         try{
             const savedUser = await user.save()
-            res.json({user: savedUser._id})
-        } catch(err){
-            res.status(400).send(err)
+            res.status(200).json({user})
+        }catch(err){
+            res.status(400).json({error: err})
         }
-})
+    }
+)
 
 // router.post('login', async (req, res)=>{
 
