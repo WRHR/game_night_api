@@ -2,7 +2,7 @@ const router = require('express').Router()
 const Event = require('../models/Event')
 const User = require('../models/User')
 const authorize = require('./privateRoutes')
-const { response } = require('express')
+
 
 router.get('/', async (req, res)=>{
     const events = await Event.find()
@@ -11,7 +11,6 @@ router.get('/', async (req, res)=>{
 
 router.post('/', authorize, async (req, res)=> {
     const authUser = await User.findOne({_id: req.user._id})
-    console.log(authUser._id)
     const event = new Event({
         title: req.body.title,
         description: req.body.description,
@@ -27,7 +26,7 @@ router.post('/', authorize, async (req, res)=> {
         authUser.save()
         res.status(200).json({event})
     }catch(err){
-        res.status(400).json({error: err})
+        res.status(401).json({error: err})
     }
 })
 
