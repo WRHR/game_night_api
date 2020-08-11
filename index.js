@@ -11,8 +11,10 @@ app.use(cors())
 app.use(bodyParser.json())
 
 const authRoute = require('./routes/auth')
+const eventRoute = require('./routes/events')
 
 app.use('/users', authRoute)
+app.use('/events', eventRoute)
 
 mongoose.connect(
     process.env.DB_CONNECT,
