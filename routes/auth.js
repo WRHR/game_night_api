@@ -38,9 +38,9 @@ router.post('/register',
         try{
             const savedUser = await user.save()
             const token = jwt.sign({ _id: savedUser._id }, process.env.TOKEN_SECRET)
-            res.status(200).json({ token })
+            res.status(200).json({ user: savedUser, token })
         }catch(err){
-            res.status(400).json({ error: err })
+            res.status(400).json({ errors: err })
         }
     }
 )
@@ -55,14 +55,27 @@ router.post('/login', [
             return res.status(400).json({errors: errors.array() })
         }
         const user = await User.findOne({ email: req.body.email })
-        if(!user) return res.status(400).json('Incorrect Email or Password')
+        if(!user) return res.status(400).json({errors: 'Incorrect Email or Password'})
 
         const validPassword = await bcrypt.compare(req.body.password, user.password)
-        if(!validPassword) return res.status(400).json('Incorrect Email or Password')
+        if(!validPassword) return res.status(400).json({errors: 'Incorrect Email or Password'})
 
         const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-        res.status(200).json({ token })
+        res.status(200).json({ user, token })
     }
 )
+
+router.get('/profile', async (req, res)=> {
+    const token = req.header('Authorization').split(' ')[1]
+    if(!token) return res.status(401).json({error: 'You must be logged in to do this'})
+
+    try{
+        const decodedToken = jwt.decode(token, process.env.TOKEN_SECRET)
+        let user = await User.findOne({ _id: decodedToken._id})
+        res.status(200).json({ user })
+    }catch(err){
+        res.status(400).json({error: err})
+    }
+})
 
 module.exports = router
