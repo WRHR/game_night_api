@@ -9,7 +9,8 @@ router.get('/', async (req,res)=>{
     let serialzedUsers = users.map(user=> {
         return ({
             _id: user._id,
-            name: `${user.name.first} ${user.name.last}`
+            name: `${user.name.first} ${user.name.last}`,
+            gameLibrary: user.gameLibrary
         })
     })
     try{
