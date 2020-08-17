@@ -4,6 +4,21 @@ const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+router.get('/', async (req,res)=>{
+    let users = await User.find()
+    let serialzedUsers = users.map(user=> {
+        return ({
+            _id: user._id,
+            name: `${user.name.first} ${user.name.last}`
+        })
+    })
+    try{
+        res.status(200).json({users: serialzedUsers})
+    }catch(err){
+        res.status(400).json({error: err})
+    }
+})
+
 router.post('/register', 
     [
         body('name').exists(),

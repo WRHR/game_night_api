@@ -12,9 +12,11 @@ app.use(bodyParser.json())
 
 const authRoute = require('./routes/auth')
 const eventRoute = require('./routes/events')
+const gamesRoute = require('./routes/games')
 
 app.use('/users', authRoute)
 app.use('/events', eventRoute)
+app.use('/games', gamesRoute)
 
 mongoose.connect(
     process.env.DB_CONNECT,
