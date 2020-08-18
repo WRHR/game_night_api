@@ -27,7 +27,6 @@ router.post('/', authorize, async (req, res)=> {
         req.body.attendees.forEach(async attendee =>  {
             let guest = await User.findOne({_id: attendee})
             guest.events = [...guest.events, savedEvent._id]
-            console.log(guest)
             guest.save()
         })
         res.status(200).json({event})
