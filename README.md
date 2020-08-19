@@ -14,9 +14,9 @@ The sever side client was created using Node.js, Express and MongoDB
 
 ### Api's Utilized
 
-For Video Game look up and information [RAWG.io](https://rawg.io/)
-To display events on a calender [Fullcallender.io](https://fullcalendar.io/) 
-To create and reuse custom styled components [Styled-Components](https://styled-components.com/)
+For Video Game look up and information [RAWG.io](https://rawg.io/)<br/>
+To display events on a calender [Fullcallender.io](https://fullcalendar.io/)<br/> 
+To create and reuse custom styled components [Styled-Components](https://styled-components.com/)<br/>
 
 Link to frontend [here](https://github.com/WRHR/game-night-app)
 
