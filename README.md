@@ -7,7 +7,7 @@ Capstone project developed for the Flatiron Software Engineering BootCamp.
 My motivation for this project was to allow my friends and I to stay in touch through our common love of video games. Through this app we are able to see an overview of all our planned events, update our game librarys, and add game nights to everyone's calanders. This application helps facilitate planning these events through clearly labeled and animated features, creating a very user friendly experience.
 
 ### Frontend 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with React
 
 ### Backend
 The sever side client was created using Node.js, Express and MongoDB 
